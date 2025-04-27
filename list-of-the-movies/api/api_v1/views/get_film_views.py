@@ -1,9 +1,12 @@
-from typing import List
+from typing import List, Annotated
 
 from fastapi import (
     HTTPException,
     APIRouter,
+    status,
+    Form,
 )
+from pydantic.fields import Field
 
 from schemas.movies_schema import Movie
 from services.const import MOVIES_LIST
@@ -28,6 +31,29 @@ def read_movie(movie_id: int):
     return get_film_by_id(movie_id)
 
 
-@router.get("/list", response_model=List[Movie])
+@router.get("/", response_model=List[Movie])
 def read_list_of_films():
     return MOVIES_LIST
+
+
+@router.post(
+    path="/",
+    response_model=Movie,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_movie(
+    title: Annotated[str, Field(min_length=3, max_length=20), Form()],
+    year: Annotated[int, Field(ge=1950), Form()],
+    description: Annotated[str, Field(min_length=10), Form()],
+    duration: Annotated[float, Field(ge=5.0), Form()],
+):
+    MOVIES_LIST.append(
+        Movie(
+            movie_id=len(MOVIES_LIST) + 1,
+            title=title,
+            year=year,
+            description=description,
+            duration=duration,
+        )
+    )
+    return MOVIES_LIST[-1]
