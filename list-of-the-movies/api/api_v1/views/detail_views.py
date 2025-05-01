@@ -1,0 +1,55 @@
+from typing import Annotated
+
+from fastapi import APIRouter
+from fastapi.params import Depends
+from starlette import status
+
+from crud.crud import storage
+from dependencies.prefetch_movie import prefetch_movie
+from schemas.movies_schema import Movie, UpdateMovie
+
+router = APIRouter(
+    prefix="/{slug}",
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "description": "film not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "FILM 'slug' not found",
+                    },
+                },
+            },
+        },
+    },
+)
+
+Movie_By_Slug = Annotated[Movie, Depends(prefetch_movie)]
+
+
+@router.get(
+    "/",
+    response_model=Movie,
+)
+def read_movie(
+    movie: Movie_By_Slug,
+) -> Movie | None:
+    return movie
+
+
+@router.delete(
+    "/",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_movie(
+    movie: Movie_By_Slug,
+) -> None:
+    storage.delete(film_in=movie)
+
+
+@router.put(
+    path="/",
+    response_model=Movie,
+)
+def update_movie(movie: Movie_By_Slug, movie_in: UpdateMovie) -> Movie | None:
+    return storage.update(film=movie, film_in=movie_in)

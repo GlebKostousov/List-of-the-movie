@@ -2,11 +2,11 @@ from typing import Dict, List
 
 from pydantic import BaseModel
 
-from schemas.movies_schema import Movie, CreateMovie
+from schemas.movies_schema import Movie, CreateMovie, UpdateMovie
 
 
 class ShortUrlsStorage(BaseModel):
-    slug_to_film: Dict[str, Movie] = {}
+    slug_to_film: Dict[str, Movie] = {}  # ключ - slug
 
     def get_list(self) -> List[Movie]:
         return list(self.slug_to_film.values())
@@ -24,6 +24,11 @@ class ShortUrlsStorage(BaseModel):
 
     def delete(self, film_in: Movie) -> None:
         return self.delete_by_slug(slug=film_in.slug)
+
+    def update(self, film: Movie, film_in: UpdateMovie) -> Movie:
+        for field, value in film_in:
+            setattr(film, field, value)
+        return film
 
 
 storage = ShortUrlsStorage()
