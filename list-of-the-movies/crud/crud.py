@@ -2,7 +2,7 @@ from typing import Dict, List
 
 from pydantic import BaseModel
 
-from schemas.movies_schema import Movie, CreateMovie, UpdateMovie
+from schemas.movies_schema import Movie, CreateMovie, UpdateMovie, PartialUpdateMovie
 
 
 class ShortUrlsStorage(BaseModel):
@@ -27,6 +27,11 @@ class ShortUrlsStorage(BaseModel):
 
     def update(self, film: Movie, film_in: UpdateMovie) -> Movie:
         for field, value in film_in:
+            setattr(film, field, value)
+        return film
+
+    def partial_update(self, film: Movie, film_in: PartialUpdateMovie) -> Movie:
+        for field, value in film_in.model_dump(exclude_unset=True).items():
             setattr(film, field, value)
         return film
 

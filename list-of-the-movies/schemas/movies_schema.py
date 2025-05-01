@@ -2,22 +2,31 @@ from pydantic import BaseModel
 from typing import Annotated
 from annotated_types import Ge, Len, MaxLen
 
+"--------- Аннотации --------------------------------"
+Slug = Annotated[str, Len(3, 30)]
+Title = Annotated[str, Len(min_length=3, max_length=50)]
+Year = Annotated[int, Ge(1950)]
+Duration = Annotated[float, Ge(5.0)]
+Description = Annotated[str, MaxLen(200)]
+
 
 class MovieBase(BaseModel):
-    # noinspection PyTypeHints
-    title: Annotated[str, Len(min_length=3, max_length=50)]
-    year: Annotated[int, Ge(1950)]
+    """
+    Базовая модель только для наследования
+    """
+
+    title: Title
+    year: Year
     description: str = ""
-    duration: Annotated[float, Ge(5.0)]
+    duration: Duration
 
 
 class Movie(MovieBase):
     """
-    Класс для хранения данных о фильме
+    Класс для хранения и вывода данных о фильме
     """
 
-    # noinspection PyTypeHints
-    slug: Annotated[str, Len(3, 30)]
+    slug: Slug
 
 
 class CreateMovie(MovieBase):
@@ -25,13 +34,23 @@ class CreateMovie(MovieBase):
     Модель для добавления нового фильма
     """
 
-    # noinspection PyTypeHints
-    slug: Annotated[str, Len(3, 30)]
+    slug: Slug
 
 
 class UpdateMovie(MovieBase):
     """
-    Модель для обновления информации о фильме
+    Модель для полного обновления информации о фильме
     """
 
-    description: Annotated[str, MaxLen(200)] = ""
+    description: Description = ""
+
+
+class PartialUpdateMovie(MovieBase):
+    """
+    Модель для частичного обновления данных Movie
+    """
+
+    title: Title | None = None
+    year: Year | None = None
+    description: Description | None = None
+    duration: Duration | None = None
