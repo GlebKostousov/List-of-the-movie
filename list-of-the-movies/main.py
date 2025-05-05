@@ -3,10 +3,9 @@ from fastapi import (
     Request,
 )
 from api import router as api_router
+from api.app_lifespan import lifespan
 
-app = FastAPI(
-    title="Сайт про фильмы",
-)
+app = FastAPI(title="Сайт про фильмы", lifespan=lifespan)
 app.include_router(api_router)
 
 

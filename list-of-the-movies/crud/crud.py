@@ -10,6 +10,17 @@ from services.logger import log
 class MovieStorage(BaseModel):
     slug_to_film: Dict[str, Movie] = {}  # ключ - slug
 
+    def init_storage_from_state(self) -> None:
+        try:
+            data = MovieStorage.load_state()
+        except ValidationError:
+            self.save_state()
+            log.warning("Rewritten storage file due to validation error")
+            return
+
+        self.slug_to_film.update(data.slug_to_film)
+        log.warning("Recovered data from storage file")
+
     def save_state(self) -> None:
         DB_PATH.write_text(self.model_dump_json(indent=2))
         log.info("Saved state ")
@@ -53,10 +64,4 @@ class MovieStorage(BaseModel):
         return film
 
 
-try:
-    storage = MovieStorage.load_state()
-    log.warning("Recovering state from DB")
-except ValidationError:
-    storage = MovieStorage()
-    storage.save_state()
-    log.warning("Rewrite storage file")
+storage = MovieStorage()
