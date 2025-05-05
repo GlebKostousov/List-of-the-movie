@@ -6,7 +6,7 @@ from annotated_types import Ge, Len, MaxLen
 Slug = Annotated[str, Len(3, 30)]
 Title = Annotated[str, Len(min_length=3, max_length=50)]
 Year = Annotated[int, Ge(1950)]
-Duration = Annotated[float, Ge(5.0)]
+Duration = Annotated[float, Ge(5)]
 Description = Annotated[str, MaxLen(200)]
 
 
@@ -27,6 +27,15 @@ class Movie(MovieBase):
     """
 
     slug: Slug
+    notes: str = ""
+
+
+class MovieRead(MovieBase):
+    """
+    Модель для ответа на запрос
+    """
+
+    slug: str
 
 
 class CreateMovie(MovieBase):
