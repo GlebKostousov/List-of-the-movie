@@ -5,7 +5,7 @@ from typing import Final
 from services.tools import get_project_root
 
 BASE_DIR: Final[Path] = get_project_root()
-DB_PATH: Path = Path(BASE_DIR / "db" / "movies.json")
+DB_PATH: Final[Path] = Path(BASE_DIR / "db" / "movies.json")
 
 LOG_LEVEL = logging.INFO
 LOG_FORMAT: str = (

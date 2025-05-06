@@ -1,5 +1,3 @@
-from typing import Generator
-
 from crud.crud import storage
 
 from fastapi import FastAPI
