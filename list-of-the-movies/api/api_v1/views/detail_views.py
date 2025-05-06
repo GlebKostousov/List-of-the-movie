@@ -43,10 +43,8 @@ def read_movie(
 )
 def delete_movie(
     movie: Movie_By_Slug,
-    background_tasks: BackgroundTasks,
 ) -> None:
     storage.delete(film_in=movie)
-    background_tasks.add_task(storage.save_state)
 
 
 @router.put(
@@ -56,9 +54,7 @@ def delete_movie(
 def update_movie(
     movie: Movie_By_Slug,
     movie_in: UpdateMovie,
-    background_tasks: BackgroundTasks,
 ) -> Movie | None:
-    background_tasks.add_task(storage.save_state)
     return storage.update(film=movie, film_in=movie_in)
 
 
@@ -66,7 +62,5 @@ def update_movie(
 def patch_movie(
     movie: Movie_By_Slug,
     movie_in: PartialUpdateMovie,
-    background_tasks: BackgroundTasks,
 ) -> Movie:
-    background_tasks.add_task(storage.save_state)
     return storage.partial_update(film=movie, film_in=movie_in)

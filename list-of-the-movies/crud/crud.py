@@ -24,13 +24,13 @@ class MovieStorage(BaseModel):
     @classmethod
     def load_state(cls) -> "MovieStorage":
         if not DB_PATH.exists():
-            log.info(f"DB_PATH не существует. Создаем!")
+            log.info(f"DB_PATH не существует. Создал новый!")
             return MovieStorage()
         return cls.model_validate_json(DB_PATH.read_text())
 
     def save_state(self) -> None:
         DB_PATH.write_text(self.model_dump_json(indent=2))
-        log.warning("Сохранение данных в JSON")
+        log.warning("Сохранил данные в JSON")
 
     def get_list(self) -> List[Movie]:
         return list(self.slug_to_film.values())
