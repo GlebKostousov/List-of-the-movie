@@ -1,15 +1,36 @@
 from typing import List
 
-from fastapi import APIRouter, status, Depends
+from fastapi import (
+    APIRouter,
+    status,
+    Depends,
+)
 
-from schemas.movies_schema import Movie, CreateMovie, MovieRead
+from dependencies.api_token_required import api_token_required
+from schemas.movies_schema import (
+    Movie,
+    CreateMovie,
+    MovieRead,
+)
 from crud.crud import storage
 from dependencies.storage_save_state_background import storage_save_state_background
 
 router = APIRouter(
     prefix="/movies",
     tags=["movies"],
-    dependencies=[Depends(storage_save_state_background)],
+    dependencies=[Depends(storage_save_state_background), Depends(api_token_required)],
+    responses={
+        status.HTTP_401_UNAUTHORIZED: {
+            "description": "Authentication credentials were not provided.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "You APIkey invalid",
+                    },
+                },
+            },
+        },
+    },
 )
 
 

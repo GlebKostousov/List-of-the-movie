@@ -20,3 +20,10 @@ UNSAFE_METHODS = frozenset(
         "PATCH",
     }
 )
+API_TOKENS: frozenset[str] = frozenset(
+    {
+        "mFOcFcH4FWqEfH-88jhCTbVxN6c",
+        "PkaVw5QFUmypE9Gwsf2y2g",
+        "T2FP-VqUmzfg5nZ01ZxrCA",
+    }
+)
