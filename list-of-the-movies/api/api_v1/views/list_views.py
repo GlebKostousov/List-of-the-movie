@@ -6,7 +6,7 @@ from fastapi import (
     Depends,
 )
 
-from dependencies.api_token_required import basic_user_auth_required_for_unsafe_methods
+from dependencies.auth_required import auth_required
 from schemas.movies_schema import (
     Movie,
     CreateMovie,
@@ -20,7 +20,7 @@ router = APIRouter(
     tags=["movies"],
     dependencies=[
         Depends(storage_save_state_background),
-        Depends(basic_user_auth_required_for_unsafe_methods),
+        Depends(auth_required),
     ],
     responses={
         status.HTTP_401_UNAUTHORIZED: {

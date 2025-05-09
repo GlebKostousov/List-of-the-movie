@@ -36,20 +36,23 @@ user_basic_auth = HTTPBasic(
 )
 
 
-def basic_user_auth_required_for_unsafe_methods(
-    request: Request,
-    credentials: Annotated[
-        HTTPBasicCredentials | None,
-        Depends(user_basic_auth),
-    ] = None,
+def validate_api_token(
+    api_token: HTTPAuthorizationCredentials,
+):
+    log.info("Received %r API token", api_token)
+    if api_token.credentials not in API_TOKENS:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You APIkey invalid",
+        )
+
+
+def validate_basic_user(
+    credentials: HTTPBasicCredentials,
 ):
     log.info("User auth credentials %s", credentials)
-    if request.method not in UNSAFE_METHODS:
-        return
-
     if (
-        credentials
-        and credentials.username in FAKE_USERNAME_DB
+        credentials.username in FAKE_USERNAME_DB
         and FAKE_USERNAME_DB[credentials.username] == credentials.password
     ):
         return
@@ -61,25 +64,27 @@ def basic_user_auth_required_for_unsafe_methods(
     )
 
 
-def api_token_required(
+def auth_required(
     request: Request,
     api_token: Annotated[
         HTTPAuthorizationCredentials | None,
         Depends(static_api_token),
     ] = None,
+    credentials: Annotated[
+        HTTPBasicCredentials | None,
+        Depends(user_basic_auth),
+    ] = None,
 ):
-    log.info("Received %r API token", api_token)
     if request.method not in UNSAFE_METHODS:
         return
 
-    if not api_token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Empty API token",
-        )
+    if api_token:
+        return validate_api_token(api_token=api_token)
 
-    if api_token.credentials not in API_TOKENS:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You APIkey invalid",
-        )
+    if credentials:
+        return validate_basic_user(credentials=credentials)
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Incorrect api token or credentials",
+    )
