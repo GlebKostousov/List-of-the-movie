@@ -27,3 +27,8 @@ API_TOKENS: frozenset[str] = frozenset(
         "T2FP-VqUmzfg5nZ01ZxrCA",
     }
 )
+
+FAKE_USERNAME_DB: dict[str, str] = {
+    "bob": "password",
+    "jon": "qwerty",
+}
