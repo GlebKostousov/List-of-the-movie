@@ -1,7 +1,7 @@
 from fastapi import (
     Request,
     status,
-    Query,
+    Header,
     HTTPException,
 )
 from typing import Annotated
@@ -13,7 +13,10 @@ from services.const import (
 
 def api_token_required(
     request: Request,
-    api_token: Annotated[str, Query()] = "",
+    api_token: Annotated[
+        str,
+        Header(alias="x-auth-token"),
+    ] = "",
 ):
     if request.method not in UNSAFE_METHODS:
         return
