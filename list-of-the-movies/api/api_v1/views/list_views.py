@@ -18,14 +18,18 @@ from dependencies.storage_save_state_background import storage_save_state_backgr
 router = APIRouter(
     prefix="/movies",
     tags=["movies"],
-    dependencies=[Depends(storage_save_state_background), Depends(api_token_required)],
+    dependencies=[
+        Depends(storage_save_state_background),
+        Depends(api_token_required),
+    ],
     responses={
         status.HTTP_401_UNAUTHORIZED: {
-            "description": "Authentication credentials were not provided.",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": "You APIkey invalid",
+            "description": "Authentication error",  # Текстовое описание ответа
+            "content": {  # Описание формата тела ответа
+                "application/json": {  # JSON-ответ
+                    "example": {  # пример тела ответа
+                        # техническая информация для разработчиков!
+                        "detail": "APIkey invalid. Only for unsafe methods",
                     },
                 },
             },
