@@ -12,19 +12,14 @@ LOG_FORMAT: str = (
     "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
 )
 
+REDIS_TOKEN_SET_NAME: Final[str] = "tokens"
+
 UNSAFE_METHODS = frozenset(
     {
         "POST",
         "DELETE",
         "PUT",
         "PATCH",
-    }
-)
-API_TOKENS: frozenset[str] = frozenset(
-    {
-        "mFOcFcH4FWqEfH-88jhCTbVxN6c",
-        "PkaVw5QFUmypE9Gwsf2y2g",
-        "T2FP-VqUmzfg5nZ01ZxrCA",
     }
 )
 

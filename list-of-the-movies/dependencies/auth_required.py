@@ -9,8 +9,8 @@ from fastapi.params import Depends
 
 from services.const import (
     UNSAFE_METHODS,
-    API_TOKENS,
     FAKE_USERNAME_DB,
+    REDIS_TOKEN_SET_NAME,
 )
 
 from fastapi.security import (
@@ -19,6 +19,7 @@ from fastapi.security import (
     HTTPBasic,
     HTTPBasicCredentials,
 )
+from db.redis_db.redis_tokens import redis_token
 import logging
 
 log = logging.getLogger(__name__)
@@ -40,11 +41,16 @@ def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
 ):
     log.info("Received %r API token", api_token)
-    if api_token.credentials not in API_TOKENS:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You APIkey invalid",
-        )
+    if redis_token.sismember(
+        name=REDIS_TOKEN_SET_NAME,
+        value=api_token.credentials,
+    ):
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="You APIkey invalid",
+    )
 
 
 def validate_basic_user(
