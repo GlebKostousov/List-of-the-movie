@@ -10,7 +10,6 @@ from fastapi.params import Depends
 from services.const import (
     UNSAFE_METHODS,
     FAKE_USERNAME_DB,
-    REDIS_TOKEN_SET_NAME,
 )
 
 from fastapi.security import (
@@ -19,7 +18,7 @@ from fastapi.security import (
     HTTPBasic,
     HTTPBasicCredentials,
 )
-from db.redis_db.redis_tokens import redis_token
+from db.redis_db.redis_tokens_wrapper import redis_token
 import logging
 
 log = logging.getLogger(__name__)
@@ -41,9 +40,8 @@ def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
 ):
     log.info("Received %r API token", api_token)
-    if redis_token.sismember(
-        name=REDIS_TOKEN_SET_NAME,
-        value=api_token.credentials,
+    if redis_token.token_exists(
+        token_to_check=api_token.credentials,
     ):
         return
 
