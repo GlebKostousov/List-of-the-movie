@@ -3,7 +3,7 @@
 """
 
 from redis import Redis
-import db.redis_db.redis_config as rc
+import api.api_v1.service.auth.redis_auth.redis_config as rc
 
 redis = Redis(
     host=rc.REDIS_HOST,

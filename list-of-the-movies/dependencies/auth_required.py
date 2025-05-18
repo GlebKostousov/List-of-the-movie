@@ -7,10 +7,7 @@ from typing import Annotated
 
 from fastapi.params import Depends
 
-from services.const import (
-    UNSAFE_METHODS,
-    FAKE_USERNAME_DB,
-)
+from services.const import UNSAFE_METHODS
 
 from fastapi.security import (
     HTTPBearer,
@@ -18,7 +15,10 @@ from fastapi.security import (
     HTTPBasic,
     HTTPBasicCredentials,
 )
-from db.redis_db.redis_tokens_wrapper import redis_token
+from api.api_v1.service.auth.redis_auth import (
+    redis_users,
+    redis_token,
+)
 import logging
 
 log = logging.getLogger(__name__)
@@ -55,9 +55,9 @@ def validate_basic_user(
     credentials: HTTPBasicCredentials,
 ):
     log.info("User auth credentials %s", credentials)
-    if (
-        credentials.username in FAKE_USERNAME_DB
-        and FAKE_USERNAME_DB[credentials.username] == credentials.password
+    if credentials and redis_users.verified_password_is_correct(
+        username_in=credentials.username,
+        password_in=credentials.password,
     ):
         return
 

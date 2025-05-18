@@ -3,9 +3,9 @@
 """
 
 from redis import Redis
-import db.redis_db.redis_config as rc
+import api.api_v1.service.auth.redis_auth.redis_config as rc
 
-from db.abstract_db_wrapper import AbstractTokensHelper
+from api.api_v1.service.auth.abstract_tokens_wrapper import AbstractTokensHelper
 
 
 class RedisTokensHelper(AbstractTokensHelper):
