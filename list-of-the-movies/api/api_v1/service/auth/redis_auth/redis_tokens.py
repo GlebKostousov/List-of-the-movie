@@ -3,7 +3,7 @@
 """
 
 from redis import Redis
-import api.api_v1.service.auth.redis_auth.redis_config as rc
+import services.redis_config as rc
 
 from api.api_v1.service.auth.abstract_tokens_wrapper import AbstractTokensHelper
 

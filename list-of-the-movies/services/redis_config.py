@@ -12,3 +12,6 @@ REDIS_TOKENS_DB: Final[int] = 1
 REDIS_TOKENS_SET_NAME: Final[str] = "tokens"
 
 REDIS_USERS_DB: Final[int] = 2
+
+REDIS_FILMS_DB: Final[int] = 3
+REDIS_FILMS_SET_NAME: Final[str] = "films"

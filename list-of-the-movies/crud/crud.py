@@ -1,10 +1,19 @@
 from typing import Dict, List
 
 from pydantic import BaseModel, ValidationError
+from redis import Redis
 
 from schemas.movies_schema import Movie, CreateMovie, UpdateMovie, PartialUpdateMovie
 from services.const import DB_PATH
 from services.logger import log
+import services.redis_config as rc
+
+redis_films = Redis(
+    host=rc.REDIS_HOST,
+    port=rc.REDIS_PORT,
+    db=rc.REDIS_FILMS_DB,
+    decode_responses=rc.REDIS_DECODE,
+)
 
 
 class MovieStorage(BaseModel):
@@ -40,7 +49,11 @@ class MovieStorage(BaseModel):
 
     def create(self, film_in: CreateMovie) -> Movie:
         film = Movie(**film_in.model_dump())
-        self.slug_to_film[film.slug] = film
+        redis_films.hset(
+            name=rc.REDIS_FILMS_SET_NAME,
+            key=film.slug,
+            value=film.model_dump_json(),
+        )
         return film
 
     def delete_by_slug(self, slug: str) -> None:
