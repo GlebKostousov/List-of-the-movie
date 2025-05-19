@@ -42,7 +42,10 @@ class MovieStorage(BaseModel):
         log.warning("Сохранил данные в JSON")
 
     def get_list(self) -> List[Movie]:
-        return list(self.slug_to_film.values())
+        return [
+            Movie.model_validate_json(value)
+            for value in redis_films.hvals(name=rc.REDIS_FILMS_SET_NAME)
+        ]
 
     def get_by_slug(self, slug: str) -> Movie | None:
         if film_json := redis_films.hget(
