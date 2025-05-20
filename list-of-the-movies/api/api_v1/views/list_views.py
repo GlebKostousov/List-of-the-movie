@@ -4,6 +4,7 @@ from fastapi import (
     APIRouter,
     status,
     Depends,
+    HTTPException,
 )
 
 from dependencies.auth_required import auth_required
@@ -32,6 +33,17 @@ router = APIRouter(
                 },
             },
         },
+        status.HTTP_409_CONFLICT: {
+            "description": "Movie already exist",  # Текстовое описание ответа
+            "content": {  # Описание формата тела ответа
+                "application/json": {  # JSON-ответ
+                    "example": {  # пример тела ответа
+                        # техническая информация для разработчиков!
+                        "detail": "You tried to create a movie that already exists",
+                    },
+                },
+            },
+        },
     },
 )
 
@@ -49,4 +61,10 @@ def read_list_of_films() -> List[Movie]:
 def create_movie(
     movie_create: CreateMovie,
 ) -> Movie:
-    return storage.create(film_in=movie_create)
+    if not storage.get_by_slug(movie_create.slug):
+        return storage.create(film_in=movie_create)
+
+    raise HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail=f"Movie with slug={movie_create.slug!r} already exists",
+    )
