@@ -7,8 +7,6 @@ from typing import Annotated
 
 from fastapi.params import Depends
 
-from services.const import UNSAFE_METHODS
-
 from fastapi.security import (
     HTTPBearer,
     HTTPAuthorizationCredentials,
@@ -20,6 +18,8 @@ from api.api_v1.service.auth.redis_auth import (
     redis_token,
 )
 import logging
+
+from services.const import UNSAFE_METHODS
 
 log = logging.getLogger(__name__)
 

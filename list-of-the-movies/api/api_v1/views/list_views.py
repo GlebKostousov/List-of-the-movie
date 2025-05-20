@@ -13,13 +13,11 @@ from schemas.movies_schema import (
     MovieRead,
 )
 from crud.crud import storage
-from dependencies.storage_save_state_background import storage_save_state_background
 
 router = APIRouter(
     prefix="/movies",
     tags=["movies"],
     dependencies=[
-        Depends(storage_save_state_background),
         Depends(auth_required),
     ],
     responses={
