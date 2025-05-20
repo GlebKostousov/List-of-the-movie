@@ -33,17 +33,6 @@ router = APIRouter(
                 },
             },
         },
-        status.HTTP_409_CONFLICT: {
-            "description": "Movie already exist",  # Текстовое описание ответа
-            "content": {  # Описание формата тела ответа
-                "application/json": {  # JSON-ответ
-                    "example": {  # пример тела ответа
-                        # техническая информация для разработчиков!
-                        "detail": "You tried to create a movie that already exists",
-                    },
-                },
-            },
-        },
     },
 )
 
@@ -57,6 +46,19 @@ def read_list_of_films() -> List[Movie]:
     "/",
     response_model=MovieRead,
     status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_409_CONFLICT: {
+            "description": "Movie already exist",  # Текстовое описание ответа
+            "content": {  # Описание формата тела ответа
+                "application/json": {  # JSON-ответ
+                    "example": {  # пример тела ответа
+                        # техническая информация для разработчиков!
+                        "detail": "Movie with slug='name' already exists",
+                    },
+                },
+            },
+        },
+    },
 )
 def create_movie(
     movie_create: CreateMovie,
