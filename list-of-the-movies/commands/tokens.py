@@ -1,0 +1,33 @@
+from typing import Annotated
+
+import typer
+from rich import print
+
+from api.api_v1.service.auth.redis_auth import redis_token
+
+app = typer.Typer(
+    name="token",
+    no_args_is_help=True,
+    rich_markup_mode="rich",
+    help="Управление токенами",
+)
+
+
+@app.command()
+def check(
+    token: Annotated[
+        str,
+        typer.Argument(help="Токен для проверки"),
+    ],
+):
+    """
+    Проверяет валидность токена
+    """
+    print(
+        f"[bold]token: {token}[/bold]",
+        (
+            "[green]exists[/green]"
+            if redis_token.token_exists(token)
+            else "[red]doesn't exist[/red]"
+        ),
+    )
