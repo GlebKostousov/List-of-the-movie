@@ -14,6 +14,18 @@ redis_films = Redis(
 )
 
 
+class ShortUrlBaseError(Exception):
+    """
+    Base exception for short url CRUD action
+    """
+
+
+class AlreadyExistsError(ShortUrlBaseError):
+    """
+    Raised when short url slug already exists
+    """
+
+
 class MovieStorage(BaseModel):
 
     @classmethod
@@ -46,10 +58,23 @@ class MovieStorage(BaseModel):
         ):
             return Movie.model_validate_json(film_json)
 
+    @classmethod
+    def exists(cls, slug: str) -> bool:
+        return redis_films.hexists(
+            name=rc.REDIS_FILMS_SET_NAME,
+            key=slug,
+        )
+
     def create(self, film_in: CreateMovie) -> Movie:
         film = Movie(**film_in.model_dump())
         self.save_movie(film)
         return film
+
+    def create_if_not_exist(self, film_in: CreateMovie) -> Movie:
+        if not self.exists(film_in.slug):
+            return self.create(film_in)
+
+        raise AlreadyExistsError(film_in.slug)
 
     def delete(self, film_in: Movie) -> None:
         return self.delete_by_slug(slug=film_in.slug)

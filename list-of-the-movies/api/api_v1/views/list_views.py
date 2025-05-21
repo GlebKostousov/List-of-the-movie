@@ -13,7 +13,7 @@ from schemas.movies_schema import (
     CreateMovie,
     MovieRead,
 )
-from crud.crud import storage
+from crud.crud import storage, AlreadyExistsError
 
 router = APIRouter(
     prefix="/movies",
@@ -63,10 +63,10 @@ def read_list_of_films() -> List[Movie]:
 def create_movie(
     movie_create: CreateMovie,
 ) -> Movie:
-    if not storage.get_by_slug(movie_create.slug):
-        return storage.create(film_in=movie_create)
-
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail=f"Movie with slug={movie_create.slug!r} already exists",
-    )
+    try:
+        return storage.create_if_not_exist(movie_create)
+    except AlreadyExistsError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Movie with slug={movie_create.slug!r} already exists",
+        )
