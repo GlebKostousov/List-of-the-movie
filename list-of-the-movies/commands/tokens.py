@@ -20,7 +20,7 @@ def check(
         str,
         typer.Argument(help="Токен для проверки"),
     ],
-):
+) -> None:
     """
     Проверяет валидность токена
     """
@@ -35,10 +35,23 @@ def check(
 
 
 @app.command(name="list")
-def list_tokens():
+def list_tokens() -> None:
     """
     Печать списка всех доступных токенов
     """
     print(Markdown("# **Available API tokens**"))
     print(Markdown("\n- ".join([""] + redis_token.get_all_tokens())))
     print()
+
+
+@app.command()
+def rm(token_to_delete) -> None:
+    """
+    Удаляет токен из БД, если он существует
+    """
+    if redis_token.token_exists(token_to_delete):
+        redis_token.delete_token(token_to_delete)
+        print("[green]token deleted[/green]")
+        return
+
+    print("[red]token doesn't exist[/red]")

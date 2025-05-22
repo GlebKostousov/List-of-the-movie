@@ -11,6 +11,12 @@ class AbstractTokensHelper(ABC):
     """
 
     @abstractmethod
+    def delete_token(self, token_to_delete: str) -> None:
+        """
+        Удаляет токен из БД
+        """
+
+    @abstractmethod
     def get_all_tokens(self) -> list[str]:
         """
         Возвращает все токены
