@@ -1,5 +1,6 @@
 from typing import Annotated
 
+import redis
 import typer
 from rich import print
 from rich.markdown import Markdown
@@ -55,3 +56,37 @@ def rm(token_to_delete) -> None:
         return
 
     print("[red]token doesn't exist[/red]")
+
+
+@app.command()
+def create(
+    token_size_bytes: Annotated[
+        int,
+        typer.Argument(help="Размер токена"),
+    ] = 16,
+) -> None:
+    """
+    Создает новый токен и добавляет его в БД
+    """
+    if redis_token.generate_and_save_token(token_size_bytes=token_size_bytes):
+        print("[green]Токен создан[/green]")
+        return
+
+    print("[red]Ошибка при создании токена[/red]")
+
+
+@app.command()
+def add(
+    token_to_add: Annotated[
+        str,
+        typer.Argument(help="Токен для добавления в БД"),
+    ],
+) -> None:
+    """
+    Добавляет токен, который передается аргументом
+    """
+    try:
+        redis_token.add_token(token_to_add=token_to_add)
+        print(f"[green]Токен: {token_to_add} успешно добавлен![/green]")
+    except redis.exceptions.ResponseError:
+        print("[red]Ошибка при добавлении токена![/red]")

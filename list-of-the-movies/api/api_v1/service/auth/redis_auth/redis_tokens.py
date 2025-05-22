@@ -43,8 +43,8 @@ class RedisTokensHelper(AbstractTokensHelper):
 
     def add_token(self, token_to_add: str) -> None:
         self.redis.sadd(
-            name=self.tokens_set,
-            *token_to_add,
+            self.tokens_set,
+            token_to_add,
         )
 
     def get_all_tokens(self) -> list[str]:
