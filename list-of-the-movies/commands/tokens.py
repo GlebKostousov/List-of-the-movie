@@ -2,6 +2,7 @@ from typing import Annotated
 
 import typer
 from rich import print
+from rich.markdown import Markdown
 
 from api.api_v1.service.auth.redis_auth import redis_token
 
@@ -31,3 +32,13 @@ def check(
             else "[red]doesn't exist[/red]"
         ),
     )
+
+
+@app.command(name="list")
+def list_tokens():
+    """
+    Печать списка всех доступных токенов
+    """
+    print(Markdown("# **Available API tokens**"))
+    print(Markdown("\n- ".join([""] + redis_token.get_all_tokens())))
+    print()

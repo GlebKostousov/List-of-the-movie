@@ -11,6 +11,12 @@ class AbstractTokensHelper(ABC):
     """
 
     @abstractmethod
+    def get_all_tokens(self) -> list[str]:
+        """
+        Возвращает все токены
+        """
+
+    @abstractmethod
     def token_exists(self, token_to_check: str) -> bool:
         """
         Проверяет существует ли токен в БД
