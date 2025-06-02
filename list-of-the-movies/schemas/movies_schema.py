@@ -54,7 +54,7 @@ class UpdateMovie(MovieBase):
     description: Description = ""
 
 
-class PartialUpdateMovie(MovieBase):
+class PartialUpdateMovie(BaseModel):
     """
     Модель для частичного обновления данных Movie
     """

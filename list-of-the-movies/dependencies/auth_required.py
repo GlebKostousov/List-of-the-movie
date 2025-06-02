@@ -38,7 +38,7 @@ user_basic_auth = HTTPBasic(
 
 def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
-):
+) -> None:
     log.info("Received %r API token", api_token)
     if redis_token.token_exists(
         token_to_check=api_token.credentials,
@@ -53,7 +53,7 @@ def validate_api_token(
 
 def validate_basic_user(
     credentials: HTTPBasicCredentials,
-):
+) -> None:
     log.info("User auth credentials %s", credentials)
     if credentials and redis_users.verified_password_is_correct(
         username_in=credentials.username,
@@ -78,7 +78,7 @@ def auth_required(
         HTTPBasicCredentials | None,
         Depends(user_basic_auth),
     ] = None,
-):
+) -> None:
     if request.method not in UNSAFE_METHODS:
         return
 

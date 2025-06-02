@@ -46,7 +46,7 @@ def list_tokens() -> None:
 
 
 @app.command()
-def rm(token_to_delete) -> None:
+def rm(token_to_delete: str) -> None:
     """
     Удаляет токен из БД, если он существует
     """

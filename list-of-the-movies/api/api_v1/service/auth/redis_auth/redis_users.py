@@ -3,6 +3,7 @@
 """
 
 from redis import Redis
+from typing import cast
 import services.redis_config as rc
 
 from api.api_v1.service.auth.abstract_users_wrapper import AbstractUsersHelper
@@ -26,7 +27,7 @@ class RedisUsersHelper(AbstractUsersHelper):
 
     def get_password_from_db(self, username: str) -> str | None:
         if self.redis.exists(username):
-            return self.redis.get(username)
+            return cast(str | None, self.redis.get(username))
 
         return None
 

@@ -49,7 +49,7 @@ class AbstractTokensHelper(ABC):
         """
         return secrets.token_urlsafe(token_size_bytes)
 
-    def generate_and_save_token(self, token_size_bytes: int = 16):
+    def generate_and_save_token(self, token_size_bytes: int = 16) -> str:
         token = self.generate_token(token_size_bytes=token_size_bytes)
         self.add_token(token_to_add=token)
         return token

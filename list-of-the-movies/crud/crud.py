@@ -58,11 +58,15 @@ class MovieStorage(BaseModel):
         ):
             return Movie.model_validate_json(film_json)
 
+        return None
+
     @classmethod
     def exists(cls, slug: str) -> bool:
-        return redis_films.hexists(
-            name=rc.REDIS_FILMS_SET_NAME,
-            key=slug,
+        return bool(
+            redis_films.hexists(
+                name=rc.REDIS_FILMS_SET_NAME,
+                key=slug,
+            )
         )
 
     def create(self, film_in: CreateMovie) -> Movie:
