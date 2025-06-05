@@ -2,6 +2,18 @@
 
 ## Developer
 
+### Install
+
+Install `pre-commit` hook:
+```shell
+pre-commit install
+```
+
+Install packages:
+```shell
+uv install
+```
+
 ### Setup
 
 Go to workdir:
