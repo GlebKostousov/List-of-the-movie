@@ -1,10 +1,9 @@
-from typing import List
 
 from pydantic import BaseModel
 from redis import Redis
 
-from schemas.movies_schema import Movie, CreateMovie, UpdateMovie, PartialUpdateMovie
 import services.redis_config as rc
+from schemas.movies_schema import CreateMovie, Movie, PartialUpdateMovie, UpdateMovie
 
 redis_films = Redis(
     host=rc.REDIS_HOST,
@@ -44,7 +43,7 @@ class MovieStorage(BaseModel):
         )
 
     @classmethod
-    def get_list(cls) -> List[Movie]:
+    def get_list(cls) -> list[Movie]:
         return [
             Movie.model_validate_json(value)
             for value in redis_films.hvals(name=rc.REDIS_FILMS_SET_NAME)
@@ -66,7 +65,7 @@ class MovieStorage(BaseModel):
             redis_films.hexists(
                 name=rc.REDIS_FILMS_SET_NAME,
                 key=slug,
-            )
+            ),
         )
 
     def create(self, film_in: CreateMovie) -> Movie:

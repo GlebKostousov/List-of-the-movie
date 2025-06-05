@@ -6,7 +6,7 @@ from starlette import status
 
 from crud.crud import storage
 from dependencies.prefetch_movie import prefetch_movie
-from schemas.movies_schema import Movie, UpdateMovie, PartialUpdateMovie, MovieRead
+from schemas.movies_schema import Movie, MovieRead, PartialUpdateMovie, UpdateMovie
 
 router = APIRouter(
     prefix="/{slug}",

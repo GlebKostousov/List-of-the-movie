@@ -1,24 +1,23 @@
-from fastapi import (
-    Request,
-    status,
-    HTTPException,
-)
+import logging
 from typing import Annotated
 
+from fastapi import (
+    HTTPException,
+    Request,
+    status,
+)
 from fastapi.params import Depends
-
 from fastapi.security import (
-    HTTPBearer,
     HTTPAuthorizationCredentials,
     HTTPBasic,
     HTTPBasicCredentials,
+    HTTPBearer,
 )
-from api.api_v1.service.auth.redis_auth import (
-    redis_users,
-    redis_token,
-)
-import logging
 
+from api.api_v1.service.auth.redis_auth import (
+    redis_token,
+    redis_users,
+)
 from services.const import UNSAFE_METHODS
 
 log = logging.getLogger(__name__)
@@ -80,7 +79,7 @@ def auth_required(
     ] = None,
 ) -> None:
     if request.method not in UNSAFE_METHODS:
-        return
+        return None
 
     if api_token:
         return validate_api_token(api_token=api_token)

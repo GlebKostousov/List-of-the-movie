@@ -29,7 +29,6 @@ class AbstractTokensHelper(ABC):
         :param token_to_check: Строка, которую ищем в БД
         :return: boll значение "существует ли"
         """
-        pass
 
     @abstractmethod
     def add_token(self, token_to_add: str) -> None:
@@ -38,7 +37,6 @@ class AbstractTokensHelper(ABC):
         :param token_to_add: Строка, которую необходимо добавить
         :return: None
         """
-        pass
 
     @classmethod
     def generate_token(cls, token_size_bytes: int) -> str:

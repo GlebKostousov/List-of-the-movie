@@ -1,6 +1,7 @@
-from pydantic import BaseModel
 from typing import Annotated
+
 from annotated_types import Ge, Len, MaxLen
+from pydantic import BaseModel
 
 "--------- Аннотации --------------------------------"
 Slug = Annotated[str, Len(3, 30)]

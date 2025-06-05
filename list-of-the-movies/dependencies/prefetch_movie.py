@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 from starlette import status
 
-from schemas.movies_schema import Movie
 from crud.crud import storage
+from schemas.movies_schema import Movie
 
 
 def prefetch_movie(slug: str) -> Movie:

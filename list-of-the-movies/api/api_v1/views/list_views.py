@@ -1,19 +1,17 @@
-from typing import List
-
 from fastapi import (
     APIRouter,
-    status,
     Depends,
     HTTPException,
+    status,
 )
 
+from crud.crud import AlreadyExistsError, storage
 from dependencies.auth_required import auth_required
 from schemas.movies_schema import (
-    Movie,
     CreateMovie,
+    Movie,
     MovieRead,
 )
-from crud.crud import storage, AlreadyExistsError
 
 router = APIRouter(
     prefix="/movies",
@@ -37,8 +35,8 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[MovieRead])
-def read_list_of_films() -> List[Movie]:
+@router.get("/", response_model=list[MovieRead])
+def read_list_of_films() -> list[Movie]:
     return storage.get_list()
 
 
@@ -69,4 +67,4 @@ def create_movie(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Movie with slug={movie_create.slug!r} already exists",
-        )
+        ) from None

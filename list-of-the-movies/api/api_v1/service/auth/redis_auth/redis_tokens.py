@@ -3,8 +3,8 @@
 """
 
 from redis import Redis
-import services.redis_config as rc
 
+import services.redis_config as rc
 from api.api_v1.service.auth.abstract_tokens_wrapper import AbstractTokensHelper
 
 
@@ -22,9 +22,10 @@ class RedisTokensHelper(AbstractTokensHelper):
         host: str,
         port: int,
         db: int,
+        *,
         decode_responses: bool = False,
         set_tokens_name: str = "tokens",
-    ):
+    ) -> None:
         self.tokens_set = set_tokens_name
         self.redis = Redis(
             host=host,
@@ -38,7 +39,7 @@ class RedisTokensHelper(AbstractTokensHelper):
             self.redis.sismember(
                 name=self.tokens_set,
                 value=token_to_check,
-            )
+            ),
         )
 
     def add_token(self, token_to_add: str) -> None:

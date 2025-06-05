@@ -2,6 +2,7 @@ from fastapi import (
     FastAPI,
     Request,
 )
+
 from api import router as api_router
 
 app = FastAPI(title="Сайт про фильмы")

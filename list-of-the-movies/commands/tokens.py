@@ -41,7 +41,7 @@ def list_tokens() -> None:
     Печать списка всех доступных токенов
     """
     print(Markdown("# **Available API tokens**"))
-    print(Markdown("\n- ".join([""] + redis_token.get_all_tokens())))
+    print(Markdown("\n- ".join(["", *redis_token.get_all_tokens()])))
     print()
 
 

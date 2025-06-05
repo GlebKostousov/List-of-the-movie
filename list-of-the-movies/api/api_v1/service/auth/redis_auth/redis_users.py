@@ -2,10 +2,11 @@
 Модуль для подключения БД Redis с username и password авторизации
 """
 
-from redis import Redis
 from typing import cast
-import services.redis_config as rc
 
+from redis import Redis
+
+import services.redis_config as rc
 from api.api_v1.service.auth.abstract_users_wrapper import AbstractUsersHelper
 
 
@@ -16,8 +17,9 @@ class RedisUsersHelper(AbstractUsersHelper):
         host: str,
         port: int,
         db: int,
+        *,
         decode_responses: bool = False,
-    ):
+    ) -> None:
         self.redis = Redis(
             host=host,
             port=port,

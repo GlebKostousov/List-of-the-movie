@@ -16,7 +16,6 @@ class AbstractUsersHelper(ABC):
         :param username:
         :return: Возвращаем пароль, если он есть, иначе None
         """
-        pass
 
     @classmethod
     def compare_passwords(
@@ -26,6 +25,7 @@ class AbstractUsersHelper(ABC):
     ) -> bool:
         return password1 == password2
 
+    @abstractmethod
     def add_username_and_password_to_db(
         self,
         username_to_add: str,
@@ -36,7 +36,6 @@ class AbstractUsersHelper(ABC):
         :param username_to_add: Имя пользователя для добавления
         :param password_to_add: Пароль пользователя для добавления
         """
-        pass
 
     def verified_password_is_correct(
         self,
