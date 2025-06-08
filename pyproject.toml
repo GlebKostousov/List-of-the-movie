@@ -127,5 +127,9 @@ ignore = [
     "TC006",  # runtime-cast-value: игнорируем проблемы с приведением типов
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"list-of-the-movies/testing/**/*.py" = ["S311"]
+
+
 fixable = ["ALL"]  # Автоисправление для всех правил
 unfixable = []  # Правила, которые нельзя исправлять автоматически
