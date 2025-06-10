@@ -1,3 +1,11 @@
+__all__ = (
+    "CreateMovie",
+    "Movie",
+    "MovieRead",
+    "PartialUpdateMovie",
+    "UpdateMovie",
+)
+
 from typing import Annotated
 
 from annotated_types import Ge, Len, MaxLen
