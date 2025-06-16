@@ -1,15 +1,20 @@
-
 from pydantic import BaseModel
 from redis import Redis
 
-import services.redis_config as rc
 from schemas.movies_schema import CreateMovie, Movie, PartialUpdateMovie, UpdateMovie
+from tools.redis_config import (
+    REDIS_DECODE,
+    REDIS_FILMS_DB,
+    REDIS_FILMS_SET_NAME,
+    REDIS_HOST,
+    REDIS_PORT,
+)
 
 redis_films = Redis(
-    host=rc.REDIS_HOST,
-    port=rc.REDIS_PORT,
-    db=rc.REDIS_FILMS_DB,
-    decode_responses=rc.REDIS_DECODE,
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    db=REDIS_FILMS_DB,
+    decode_responses=REDIS_DECODE,
 )
 
 
@@ -30,14 +35,14 @@ class MovieStorage(BaseModel):
     @classmethod
     def delete_by_slug(cls, slug: str) -> None:
         redis_films.hdel(
-            rc.REDIS_FILMS_SET_NAME,
+            REDIS_FILMS_SET_NAME,
             slug,
         )
 
     @classmethod
     def save_movie(cls, film: Movie) -> None:
         redis_films.hset(
-            name=rc.REDIS_FILMS_SET_NAME,
+            name=REDIS_FILMS_SET_NAME,
             key=film.slug,
             value=film.model_dump_json(),
         )
@@ -46,13 +51,13 @@ class MovieStorage(BaseModel):
     def get_list(cls) -> list[Movie]:
         return [
             Movie.model_validate_json(value)
-            for value in redis_films.hvals(name=rc.REDIS_FILMS_SET_NAME)
+            for value in redis_films.hvals(name=REDIS_FILMS_SET_NAME)
         ]
 
     @classmethod
     def get_by_slug(cls, slug: str) -> Movie | None:
         if film_json := redis_films.hget(
-            name=rc.REDIS_FILMS_SET_NAME,
+            name=REDIS_FILMS_SET_NAME,
             key=slug,
         ):
             return Movie.model_validate_json(film_json)
@@ -63,7 +68,7 @@ class MovieStorage(BaseModel):
     def exists(cls, slug: str) -> bool:
         return bool(
             redis_films.hexists(
-                name=rc.REDIS_FILMS_SET_NAME,
+                name=REDIS_FILMS_SET_NAME,
                 key=slug,
             ),
         )

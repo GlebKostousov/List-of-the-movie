@@ -18,7 +18,7 @@ from api.api_v1.service.auth.redis_auth import (
     redis_token,
     redis_users,
 )
-from services.const import UNSAFE_METHODS
+from tools.const import UNSAFE_METHODS
 
 log = logging.getLogger(__name__)
 

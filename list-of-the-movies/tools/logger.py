@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from services.const import LOG_FORMAT, LOG_LEVEL
+from tools.const import LOG_FORMAT, LOG_LEVEL
 
 logging.basicConfig(
     level=LOG_LEVEL,

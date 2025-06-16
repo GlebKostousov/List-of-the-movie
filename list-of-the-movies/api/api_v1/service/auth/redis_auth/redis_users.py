@@ -6,7 +6,7 @@ from typing import cast
 
 from redis import Redis
 
-import services.redis_config as rc
+import tools.redis_config as rc
 from api.api_v1.service.auth.abstract_users_wrapper import AbstractUsersHelper
 
 
