@@ -1,3 +1,5 @@
+__all__ = ("storage",)
+
 from pydantic import BaseModel
 from redis import Redis
 
