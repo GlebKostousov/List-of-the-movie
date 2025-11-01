@@ -4,12 +4,14 @@ from os import getenv
 from typing import ClassVar
 from unittest import TestCase
 
+import pytest
+
 from crud.crud import storage
 from schemas.movies_schema import CreateMovie, Movie, PartialUpdateMovie, UpdateMovie
 
 if getenv("TESTING") != "1":
     error_testing_msg = "Environment is not ready for testing"
-    raise OSError(error_testing_msg)
+    pytest.exit(error_testing_msg)
 
 
 def create_movie() -> Movie:
