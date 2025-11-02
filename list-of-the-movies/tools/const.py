@@ -12,3 +12,4 @@ UNSAFE_METHODS: Final[set[str]] = {
     "POST",
     "PATCH",
 }
+MAX_DESCRIPTION = 200

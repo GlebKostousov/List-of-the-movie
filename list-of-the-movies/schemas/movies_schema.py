@@ -11,12 +11,14 @@ from typing import Annotated
 from annotated_types import Ge, Len, MaxLen
 from pydantic import BaseModel
 
+from tools.const import MAX_DESCRIPTION
+
 "--------- Аннотации --------------------------------"
 Slug = Annotated[str, Len(3, 30)]
 Title = Annotated[str, Len(min_length=3, max_length=50)]
 Year = Annotated[int, Ge(1950)]
 Duration = Annotated[float, Ge(5)]
-Description = Annotated[str, MaxLen(200)]
+Description = Annotated[str, MaxLen(MAX_DESCRIPTION)]
 
 
 class MovieBase(BaseModel):

@@ -11,13 +11,19 @@ from schemas.movies_schema import Movie
 from testing.test_api.conftest import create_movie_random_slug, build_movie_create
 
 
-def create_short_url(slug: str) -> Movie:
+def create_short_url(
+    slug: str,
+    description: str = "description",
+    title: str = "title",
+    year: int = 1999,
+    duration: float = 150.0,
+) -> Movie:
     created_movie = build_movie_create(
         slug=slug,
-        description="description",
-        year=1999,
-        title="title",
-        duration=150.0,
+        description=description,
+        year=year,
+        title=title,
+        duration=duration,
     )
     return storage.create(created_movie)
 
