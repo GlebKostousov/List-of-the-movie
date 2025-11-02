@@ -64,3 +64,8 @@ def patch_movie(
     movie_in: PartialUpdateMovie,
 ) -> Movie:
     return storage.partial_update(film=movie, film_in=movie_in)
+
+
+@router.post(path="/transfer/")
+def transfer_movie():
+    raise NotImplementedError
