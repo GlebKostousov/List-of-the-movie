@@ -12,7 +12,6 @@ dependencies = [
     "typer>=0.15.2",
     "uvicorn<=0.20.0",
 ]
-
 [dependency-groups]
 dev = [
     "coverage>=7.9.2",
@@ -24,12 +23,10 @@ dev = [
     "ruff>=0.11.12",
 ]
 
-
 #mypy settings
 [tool.mypy]
 strict = true
 plugins = ["pydantic.mypy"]
-
 
 # ruff settings
 [tool.ruff]
@@ -70,7 +67,6 @@ indent-width = 4  # Ширина отступа
 
 # Assume Python 3.13
 target-version = "py313"  # Целевая версия Python
-
 [tool.ruff.lint]
 select = [
     "FAST",  # FastAPI: правила для FastAPI
@@ -131,10 +127,26 @@ ignore = [
     "RUF003", # unicode comment: игнорируем юникод в комментариях
     "TC006",  # runtime-cast-value: игнорируем проблемы с приведением типов
 ]
-
 [tool.ruff.lint.per-file-ignores]
 "list-of-the-movies/testing/**/*.py" = ["S311"]
 
 
 fixable = ["ALL"]  # Автоисправление для всех правил
 unfixable = []  # Правила, которые нельзя исправлять автоматически
+
+# pytest settings
+[tool.pytest.ini_options]
+minversion = 8.3 # минимальаня версия pytest
+addopts = "-ra --strict-markers"
+# -ra Отображается сводка по пропущенным/упавшим тестам
+# --strict-markers Строгая проверка названий меток
+
+log_cli = false # Отключите вывод логов в консоль
+log_cli_level = "INFO" # Установите уровень логирования
+console_output_style = "progress" # стиль вывода в консоль
+
+# регистрация меток "название:описание"
+markers = [
+    "apitest:test any http call"
+]
+xfail_strict = true # если в тесте не указано, то это значение по умолчанию
