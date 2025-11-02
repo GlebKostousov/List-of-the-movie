@@ -1,11 +1,20 @@
+import pytest
 from fastapi.testclient import TestClient
 from main import app
 
 client = TestClient(app=app)
 
 
-def test_root_view() -> None:
-    name = "John"
+@pytest.mark.parametrize(
+    "name",
+    [
+        "john",
+        "",
+        "!@#$",
+        "Jpgm Smith",
+    ],
+)
+def test_root_view(name: str) -> None:
     query = {"name": name}
     response = client.get("/", params=query)
     assert response.status_code == 200
