@@ -2,7 +2,8 @@ from fastapi import status
 import pytest
 from starlette.testclient import TestClient
 from main import app
-from testing.test_crud.test_crud import create_movie
+from schemas.movies_schema import Movie
+from testing.test_api.conftest import create_movie
 
 
 def test_create_movie(auth_client: TestClient) -> None:
@@ -19,3 +20,13 @@ def test_create_movie(auth_client: TestClient) -> None:
         "slug": response_data["slug"],
     }
     assert received_data == data, response_data
+
+
+def test_create_movie_already_exists(auth_client: TestClient, movie: Movie) -> None:
+    url = app.url_path_for("create_movie")
+    data: dict[str, str] = movie.model_dump(mode="json")
+    response = auth_client.post(url=url, json=data)
+    assert response.status_code == status.HTTP_409_CONFLICT, response.text
+    response_detail = response.json()["detail"]
+    expected_detail = f"Movie with slug={movie.slug!r} already exists"
+    assert response_detail == expected_detail, response_detail
