@@ -10,6 +10,8 @@ from main import app
 from schemas.movies_schema import Movie
 from testing.test_api.conftest import create_movie_random_slug
 
+pytestmark = pytest.mark.apitest
+
 
 class TestUpdate:
 

@@ -5,6 +5,7 @@ from main import app
 client = TestClient(app=app)
 
 
+@pytest.mark.apitest
 @pytest.mark.parametrize(
     "name",
     [

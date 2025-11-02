@@ -11,6 +11,8 @@ from testing.test_api.conftest import create_movie_random_slug
 from tools.const import MAX_DESCRIPTION
 from starlette import status
 
+pytestmark = pytest.mark.apitest
+
 
 class TestUpdatePartial:
 

@@ -8,6 +8,8 @@ from main import app
 from schemas.movies_schema import Movie
 from testing.test_api.conftest import build_movie_create_random_slug
 
+pytestmark = pytest.mark.apitest
+
 
 def test_create_movie(auth_client: TestClient) -> None:
     url = app.url_path_for("create_movie")
