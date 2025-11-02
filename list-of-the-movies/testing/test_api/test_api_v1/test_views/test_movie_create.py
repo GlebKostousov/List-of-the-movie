@@ -1,5 +1,4 @@
 from fastapi import status
-import pytest
 from starlette.testclient import TestClient
 from main import app
 from schemas.movies_schema import Movie

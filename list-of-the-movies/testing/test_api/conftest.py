@@ -11,6 +11,10 @@ from main import app
 from schemas.movies_schema import Movie, CreateMovie
 
 
+def _random_slug() -> str:
+    return "".join(random.choices(string.ascii_letters, k=6))
+
+
 @pytest.fixture()
 def client() -> Generator[TestClient]:
     with TestClient(app=app) as test_client:
@@ -38,16 +42,34 @@ def movie() -> Generator[Movie]:
     storage.delete(movie)
 
 
-def create_movie() -> CreateMovie:
+def create_movie(
+    slug: str = _random_slug(),
+    description: str = "description",
+    year: int = 1999,
+    title: str = "title",
+    duration: float = 150.0,
+) -> CreateMovie:
     return CreateMovie(
-        title="title",
-        year=1999,
-        description="description",
-        duration=150,
-        slug="".join(random.choices(string.ascii_letters, k=6)),
+        title=title,
+        year=year,
+        description=description,
+        duration=duration,
+        slug=slug,
     )
 
 
-def crate_and_save_movie() -> Movie:
-    created_movie = create_movie()
+def crate_and_save_movie(
+    slug: str = _random_slug(),
+    description: str = "description",
+    year: int = 1999,
+    title: str = "title",
+    duration: float = 150.0,
+) -> Movie:
+    created_movie = create_movie(
+        title=title,
+        year=year,
+        description=description,
+        duration=duration,
+        slug=slug,
+    )
     return storage.create(created_movie)
