@@ -1,33 +1,9 @@
-import random
-import string
-from collections.abc import Generator
 from typing import ClassVar
 from unittest import TestCase
 import pytest
 from crud.crud import storage, AlreadyExistsError
 from schemas.movies_schema import CreateMovie, Movie, PartialUpdateMovie, UpdateMovie
-
-
-def create_movie() -> CreateMovie:
-    return CreateMovie(
-        title="title",
-        year=1999,
-        description="description",
-        duration=150,
-        slug="".join(random.choices(string.ascii_letters, k=6)),
-    )
-
-
-def crate_and_save_movie() -> Movie:
-    created_movie = create_movie()
-    return storage.create(created_movie)
-
-
-@pytest.fixture()
-def movie() -> Generator[Movie]:
-    movie = crate_and_save_movie()
-    yield movie
-    storage.delete(movie)
+from testing.test_api.conftest import movie, crate_and_save_movie
 
 
 class UpdateMovieTestCase(TestCase):
