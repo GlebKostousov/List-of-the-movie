@@ -1,3 +1,5 @@
+"""Главный модуль запуска приложения"""
+
 from fastapi import FastAPI
 
 from api import router as api_router
