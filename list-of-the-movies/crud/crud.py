@@ -1,4 +1,7 @@
-__all__ = ("storage",)
+__all__ = (
+    "storage",
+    "AlreadyExistsError",
+)
 
 from pydantic import BaseModel
 from redis import Redis
