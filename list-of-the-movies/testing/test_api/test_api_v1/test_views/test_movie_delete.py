@@ -8,11 +8,11 @@ from starlette import status
 from crud.crud import storage
 from main import app
 from schemas.movies_schema import Movie
-from testing.test_api.conftest import crate_and_save_movie, create_movie
+from testing.test_api.conftest import create_movie_random_slug, build_movie_create
 
 
 def create_short_url(slug: str) -> Movie:
-    created_movie = create_movie(
+    created_movie = build_movie_create(
         slug=slug,
         description="description",
         year=1999,

@@ -2,12 +2,12 @@ from fastapi import status
 from starlette.testclient import TestClient
 from main import app
 from schemas.movies_schema import Movie
-from testing.test_api.conftest import create_movie
+from testing.test_api.conftest import build_movie_create_random_slug
 
 
 def test_create_movie(auth_client: TestClient) -> None:
     url = app.url_path_for("create_movie")
-    data: dict[str, str] = create_movie().model_dump(mode="json")
+    data: dict[str, str] = build_movie_create_random_slug().model_dump(mode="json")
     response = auth_client.post(url=url, json=data)
     assert response.status_code == status.HTTP_201_CREATED, response.text
     response_data = response.json()

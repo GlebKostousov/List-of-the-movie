@@ -3,12 +3,12 @@ from unittest import TestCase
 import pytest
 from crud.crud import storage, AlreadyExistsError
 from schemas.movies_schema import CreateMovie, Movie, PartialUpdateMovie, UpdateMovie
-from testing.test_api.conftest import movie, crate_and_save_movie
+from testing.test_api.conftest import movie, create_movie_random_slug
 
 
 class UpdateMovieTestCase(TestCase):
     def setUp(self) -> None:
-        self.movie = crate_and_save_movie()
+        self.movie = create_movie_random_slug()
 
     def tearDown(self) -> None:
         storage.delete(self.movie)
@@ -43,7 +43,7 @@ class MovieStorageGetMovieTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.movies = [crate_and_save_movie() for _ in range(cls.MOVIES_COUNTS)]
+        cls.movies = [create_movie_random_slug() for _ in range(cls.MOVIES_COUNTS)]
 
     @classmethod
     def tearDownClass(cls) -> None:

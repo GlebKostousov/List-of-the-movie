@@ -37,13 +37,13 @@ def auth_client(auth_token: str) -> Generator[TestClient]:
 
 @pytest.fixture()
 def movie() -> Generator[Movie]:
-    movie = crate_and_save_movie()
+    movie = create_movie_random_slug()
     yield movie
     storage.delete(movie)
 
 
-def create_movie(
-    slug: str = _random_slug(),
+def build_movie_create(
+    slug: str,
     description: str = "description",
     year: int = 1999,
     title: str = "title",
@@ -58,14 +58,44 @@ def create_movie(
     )
 
 
-def crate_and_save_movie(
-    slug: str = _random_slug(),
+def build_movie_create_random_slug(
+    description: str = "description",
+    year: int = 1999,
+    title: str = "title",
+    duration: float = 150.0,
+) -> CreateMovie:
+    return CreateMovie(
+        title=title,
+        year=year,
+        description=description,
+        duration=duration,
+        slug=_random_slug(),
+    )
+
+
+def create_movie_random_slug(
     description: str = "description",
     year: int = 1999,
     title: str = "title",
     duration: float = 150.0,
 ) -> Movie:
-    created_movie = create_movie(
+    created_movie = build_movie_create_random_slug(
+        title=title,
+        year=year,
+        description=description,
+        duration=duration,
+    )
+    return storage.create(created_movie)
+
+
+def create_movie(
+    slug: str,
+    description: str = "description",
+    year: int = 1999,
+    title: str = "title",
+    duration: float = 150.0,
+) -> Movie:
+    created_movie = build_movie_create(
         title=title,
         year=year,
         description=description,
