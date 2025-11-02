@@ -8,27 +8,31 @@ from crud.crud import storage, AlreadyExistsError
 from schemas.movies_schema import CreateMovie, Movie, PartialUpdateMovie, UpdateMovie
 
 
-def create_movie() -> Movie:
-    created_movie = CreateMovie(
+def create_movie() -> CreateMovie:
+    return CreateMovie(
         title="title",
         year=1999,
         description="description",
         duration=150,
         slug="".join(random.choices(string.ascii_letters, k=6)),
     )
+
+
+def crate_and_save_movie() -> Movie:
+    created_movie = create_movie()
     return storage.create(created_movie)
 
 
 @pytest.fixture()
 def movie() -> Generator[Movie]:
-    movie = create_movie()
+    movie = crate_and_save_movie()
     yield movie
     storage.delete(movie)
 
 
 class UpdateMovieTestCase(TestCase):
     def setUp(self) -> None:
-        self.movie = create_movie()
+        self.movie = crate_and_save_movie()
 
     def tearDown(self) -> None:
         storage.delete(self.movie)
@@ -63,7 +67,7 @@ class MovieStorageGetMovieTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.movies = [create_movie() for _ in range(cls.MOVIES_COUNTS)]
+        cls.movies = [crate_and_save_movie() for _ in range(cls.MOVIES_COUNTS)]
 
     @classmethod
     def tearDownClass(cls) -> None:
