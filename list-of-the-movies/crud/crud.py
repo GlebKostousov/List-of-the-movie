@@ -21,6 +21,9 @@ redis_films = Redis(
     db=REDIS_FILMS_DB,
     decode_responses=REDIS_DECODE,
 )
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class ShortUrlBaseError(Exception):
@@ -79,9 +82,10 @@ class MovieStorage(BaseModel):
         )
 
     def create(self, film_in: CreateMovie) -> Movie:
-        film = Movie(**film_in.model_dump())
-        self.save_movie(film)
-        return film
+        movie = Movie(**film_in.model_dump())
+        self.save_movie(movie)
+        log.info("Created movie %s", movie)
+        return movie
 
     def create_if_not_exist(self, film_in: CreateMovie) -> Movie:
         if not self.exists(film_in.slug):
