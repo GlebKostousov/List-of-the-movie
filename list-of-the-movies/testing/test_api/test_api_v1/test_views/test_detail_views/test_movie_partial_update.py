@@ -3,13 +3,13 @@ from collections.abc import Generator
 import pytest
 from _pytest.fixtures import SubRequest
 from fastapi.testclient import TestClient
+from starlette import status
 
 from crud.crud import storage
 from main import app
 from schemas.movies_schema import Movie
 from testing.test_api.conftest import create_movie_random_slug
 from tools.const import MAX_DESCRIPTION
-from starlette import status
 
 pytestmark = pytest.mark.apitest
 

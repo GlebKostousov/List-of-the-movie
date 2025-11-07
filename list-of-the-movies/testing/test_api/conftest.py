@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 from api.api_v1.service.auth.redis_auth import redis_token
 from crud.crud import storage
 from main import app
-from schemas.movies_schema import Movie, CreateMovie
+from schemas.movies_schema import CreateMovie, Movie
 
 
 def _random_slug() -> str:
