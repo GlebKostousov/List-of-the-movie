@@ -67,5 +67,5 @@ def patch_movie(
 
 
 @router.post(path="/transfer/")
-def transfer_movie():
+def transfer_movie() -> None:
     raise NotImplementedError

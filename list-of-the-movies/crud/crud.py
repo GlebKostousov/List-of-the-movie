@@ -3,6 +3,8 @@ __all__ = (
     "storage",
 )
 
+import logging
+
 from pydantic import BaseModel
 from redis import Redis
 
@@ -21,7 +23,6 @@ redis_films = Redis(
     db=REDIS_FILMS_DB,
     decode_responses=REDIS_DECODE,
 )
-import logging
 
 log = logging.getLogger(__name__)
 
