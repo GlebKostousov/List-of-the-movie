@@ -5,6 +5,7 @@ import pytest
 from _pytest.fixtures import SubRequest
 from fastapi import status
 from starlette.testclient import TestClient
+
 from main import app
 from schemas.movies_schema import Movie
 from testing.test_api.conftest import build_movie_create_random_slug
@@ -51,7 +52,7 @@ class TestCreateInvalid:
         params=[
             pytest.param(("12", "string_too_short"), id="short-slug"),
             pytest.param(("s" * 31, "string_too_long"), id="long-slug"),
-        ]
+        ],
     )
     def movie_create_values(self, request: SubRequest) -> tuple[dict[str, Any], str]:
         slug, error_msg = request.param

@@ -1,6 +1,7 @@
+import os
 import pathlib
 import sys
-import os
+
 import pytest
 
 
