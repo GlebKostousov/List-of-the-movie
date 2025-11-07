@@ -8,7 +8,7 @@ from starlette import status
 from crud.crud import storage
 from main import app
 from schemas.movies_schema import Movie
-from testing.test_api.conftest import build_movie_create
+from testing.test_api.conftest import create_movie_random_slug, build_movie_create
 
 pytestmark = pytest.mark.apitest
 
@@ -36,7 +36,7 @@ def create_short_url(
         pytest.param("123", id="short-slug"),
         pytest.param("s" * 30, id="long-slug"),
         pytest.param("some_slug", id="some_slug"),
-    ],
+    ]
 )
 def movie(request: SubRequest) -> Generator[Movie]:
     movie = create_short_url(request.param)
