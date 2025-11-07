@@ -76,7 +76,8 @@ class MovieStorageGetMovieTestCase(TestCase):
 def test_create_of_raise_if_exists(movie: Movie) -> None:
     created_movie = CreateMovie(**movie.model_dump())
     with pytest.raises(
-        expected_exception=AlreadyExistsError, match=movie.slug,
+        expected_exception=AlreadyExistsError,
+        match=movie.slug,
     ) as ex_info:
         storage.create_if_not_exist(film_in=created_movie)
 

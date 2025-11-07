@@ -29,16 +29,28 @@ class TestUpdate:
         "movie, new_title, new_description",
         [
             pytest.param(
-                ("some description", "example"), "new description", "new title", id="1",
+                ("some description", "example"),
+                "new description",
+                "new title",
+                id="1",
             ),
             pytest.param(
-                ("some description", "site"), "new description", "new title", id="2",
+                ("some description", "site"),
+                "new description",
+                "new title",
+                id="2",
             ),
             pytest.param(
-                ("some description", "empty"), "new description", "new title", id="3",
+                ("some description", "empty"),
+                "new description",
+                "new title",
+                id="3",
             ),
             pytest.param(
-                ("some description", "some tit"), "new description", "new title", id="4",
+                ("some description", "some tit"),
+                "new description",
+                "new title",
+                id="4",
             ),
         ],
         indirect=["movie"],
