@@ -1,4 +1,4 @@
-## Unreleased
+## v0.1.1 (2025-11-07)
 
 ### Refactor
 
