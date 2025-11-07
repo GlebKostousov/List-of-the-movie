@@ -1,9 +1,11 @@
 from typing import ClassVar
 from unittest import TestCase
+
 import pytest
-from crud.crud import storage, AlreadyExistsError
+
+from crud.crud import AlreadyExistsError, storage
 from schemas.movies_schema import CreateMovie, Movie, PartialUpdateMovie, UpdateMovie
-from testing.test_api.conftest import movie, create_movie_random_slug
+from testing.test_api.conftest import create_movie_random_slug
 
 
 class UpdateMovieTestCase(TestCase):
@@ -74,7 +76,8 @@ class MovieStorageGetMovieTestCase(TestCase):
 def test_create_of_raise_if_exists(movie: Movie) -> None:
     created_movie = CreateMovie(**movie.model_dump())
     with pytest.raises(
-        expected_exception=AlreadyExistsError, match=movie.slug
+        expected_exception=AlreadyExistsError,
+        match=movie.slug,
     ) as ex_info:
         storage.create_if_not_exist(film_in=created_movie)
 
