@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.7
+    rev: 0.9.8
     hooks:
       - id: uv-lock # check lock file have changes
       - id: uv-export # generate requirements.txt
@@ -24,8 +24,8 @@ repos:
       - id: detect-private-key  # Поиск приватных ключей
       - id: name-tests-test  # Проверка имен тестов
 
-  - repo: https://github.com/psf/black
-    rev: 25.9.0  # Версия Black
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 25.11.0  # Версия Black
     hooks:
       - id: black  # Форматирование кода с помощью Black
 
@@ -37,7 +37,7 @@ repos:
           - --fix  # Автоматическое исправление нарушений
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.9.1 #enable check Conventional Commits before commit
+    rev: v4.10.0 #enable check Conventional Commits before commit
     hooks:
       - id: commitizen
         stages: [ commit-msg ]
