@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.8
+    rev: 0.9.9
     hooks:
       - id: uv-lock # check lock file have changes
       - id: uv-export # generate requirements.txt
@@ -30,7 +30,7 @@ repos:
       - id: black  # Форматирование кода с помощью Black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.4  # Версия ruff для pre-commit
+    rev: v0.14.5  # Версия ruff для pre-commit
     hooks:
       - id: ruff  # Запуск линтера ruff
         args:
